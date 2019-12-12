@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="ssm_hrms@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.7">
+    <root id="1">
+      <DefaultCasing>lower/lower</DefaultCasing>
+    </root>
+    <schema id="2" parent="1" name="band3"/>
+    <schema id="3" parent="1" name="band4"/>
+    <schema id="4" parent="1" name="band5"/>
+    <schema id="5" parent="1" name="db_student"/>
+    <schema id="6" parent="1" name="db_studentinfo"/>
+    <schema id="7" parent="1" name="fff"/>
+    <schema id="8" parent="1" name="information_schema"/>
+    <schema id="9" parent="1" name="mysql"/>
+    <schema id="10" parent="1" name="paper"/>
+    <schema id="11" parent="1" name="ssm_hrms">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="12" parent="1" name="student"/>
+    <schema id="13" parent="1" name="test"/>
+    <table id="14" parent="11" name="tbl_dept"/>
+    <table id="15" parent="11" name="tbl_emp"/>
+    <column id="16" parent="14" name="dept_id">
+      <Position>1</Position>
+      <DataType>INT(10)|4</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="17" parent="14" name="dept_name">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="18" parent="14" name="dept_leader">
+      <Position>3</Position>
+      <DataType>VARCHAR(255)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <key id="19" parent="14" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>dept_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="20" parent="15" name="emp_id">
+      <Position>1</Position>
+      <DataType>INT UNSIGNED(10)|4</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="21" parent="15" name="emp_name">
+      <Position>2</Position>
+      <DataType>VARCHAR(22)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="22" parent="15" name="emp_email">
+      <Position>3</Position>
+      <DataType>VARCHAR(256)|12</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="23" parent="15" name="gender">
+      <Position>4</Position>
+      <DataType>CHAR(2)|1</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="24" parent="15" name="department_id">
+      <Position>5</Position>
+      <DataType>INT(10)|4</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <key id="25" parent="15" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>emp_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+  <display-name>Archetype Created Web Application</display-name>
+
+  <!-- 启动页面 -->
+  <welcome-file-list>
+    <welcome-file>/WEB-INF/jsp/login.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- springMVC核心配置 -->
+  <!-- Bootstraps the root web application context before servlet initialization -->
+  <!--ContextLoaderListener它的作用是启动web容器，(加载配置文件)自动装配applicationContext.xml配置信息-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!--1、启动Spring的容器  -->
+  <!-- needed for ContextLoaderListener -->
+  <!--如果不写任何参数配置，默认的是在/WEB-INF/applicationContext.xml-->
+  <!--如果想要自定义文件名，需要在web.xml中加入contextConfigLocation这个context参数-->
+  <!-- 配置applicationContext.xml -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+  <!--2、springmvc的前端控制器，拦截所有请求  -->
+  <!--配置前端控制器DispatcherServlet:它是拦截器-->
+  <!-- 配置DispatchServlet 的核心控制器 -->
+  <!--DispatchServlet是HTTP请求的中央调度处理器，它将web请求转发给controller
+  层处理，它提供了敏捷的映射和异常处理机制。-->
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 指定SpringMVC配置文件 -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc.xml</param-value>
+      <!--上面代码中，明确了contextConfigLocation的地址为：classpath:（即在classess文件夹下面），
+      而且命名为springmvc.xml（或者其他名称都可以）,指定配置文件位置时，这个配置文件的名字可以随便取。-->
+    </init-param>
+<!--    load-on-startup 元素标记容器是否应该在web应用程序启动的时候就加载这个servlet，(实例化并调用其init()方法)。
+    它的值必须是一个整数，表示servlet被加载的先后顺序。
+    如果该元素的值为负数或者没有设置，则容器会当Servlet被请求时再加载。
+    如果值为正整数或者0时，表示容器在应用启动时就加载并初始化这个servlet，值越小，servlet的优先级越高，就越先被加载。值相同时，容器就会自己选择顺序来加载。-->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- 设置http请求拦截，如*.do，这里设置的是拦截所有 -->
+<!--  如果使用/*,那么请求时可以通过DispatcherServlet转发到相应的Action或者Controller中的，
+  但是返回的内容，如返回的jsp还会再次被拦截，这样导致404错误，即访问不到jsp。所以如果以
+  后发现总是有404错误的时候，别忘了check一下 <url-pattern>/</url-pattern>的配置是否是/*.-->
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <!-- 错误跳转页面 -->
+<!--  <error-page>
+    &lt;!&ndash; 路径不正确 &ndash;&gt;
+    <error-code>404</error-code>
+    <location>/WEB-INF/errorpage/404.jsp</location>
+  </error-page>
+  <error-page>
+    &lt;!&ndash; 没有访问权限，访问被禁止 &ndash;&gt;
+    <error-code>405</error-code>
+    <location>/WEB-INF/errorpage/405.jsp</location>
+  </error-page>
+  <error-page>
+    &lt;!&ndash; 内部错误 &ndash;&gt;
+    <error-code>500</error-code>
+    <location>/WEB-INF/errorpage/500.jsp</location>
+  </error-page>-->
+
+  <!-- 3、字符编码过滤器，一定要放在所有过滤器之前 -->
+  <!-- 用来对浏览器的每一次请求进行过滤，加上了父类没有的功能，就是设置字符集编码，一般只用来配置字符集 -->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+    <init-param>
+      <!-- forceEncoding用来设置是否理会 request.getCharacterEncoding的方法 -->
+      <param-name>forceRequestEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceResponseEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+  <!--  https://www.cnblogs.com/XSdao/p/11448678.html
+    ①当配置<url-pattern>/</url-pattern>的时候，不会匹配到index.jsp类型的url。
+    ②.当配置<url-pattern><url-pattern>/*<url-pattern>的时候，会匹配到所有类型的url，包括路径型的，有各种后缀的等等。
+    这个能过滤各种类型的url，.jsp、.html 、 /hello 等各种类型的url都会被处理成UTF-8的编码。-->
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+<!--  https://www.php.cn/div-tutorial-413616.html
+  url：主要用于链接网页，网页组件或网页上的程序，借助访问方法（http，ftp，mailto等协议）来检索位置资源。URL指定要使用的协议类型
+  uri/urn：URI（统一资源标识符）用于定义项目的标识，此处单词标识符表示无论使用的方法是什么（URL或URN），
+           都要将一个资源与其他资源区分开来。URI不涉及协议规范
+  可以说URL是URI（URL是URI的子集），但URI永远不能是URL。
+  uri通用形式：scheme：[// [user：password @] host [：port]] [/] path [？查询] [#片段]
+  uri=url+urn-->
+
+  <!-- 4、使用Rest风格的URI，将页面普通的post请求转为指定的delete或者put请求 -->
+  <filter>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--HTTPPUTFORMCONTENTFILTER：将请求体中的数据解析包装成一个map -->
+  <filter>
+    <filter-name>HttpPutFormContentFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>HttpPutFormContentFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+</web-app>

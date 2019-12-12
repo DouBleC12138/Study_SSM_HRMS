@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--开启注解-->
+    <!-- <mvc:annotation-driven /> 会自动注册DefaultAnnotationHandlerMapping与
+    AnnotationMethodHandlerAdapter 两个bean,是spring MVC为@Controllers分发请求
+    所必须的。它提供了数据绑定支持，读取json的支持 -->
+    <mvc:annotation-driven/>
+    <!--处理静态资源-->
+    <mvc:default-servlet-handler/>
+    <!--在applicationContext中扫描controller后 就可以简单的访问到Controller中的接口了-->
+    <context:component-scan base-package="com.hrms.controller"/>
+
+    <!--1.解析器有很多种，比较重要的是ViewResolver
+    2.ViewResolver也有很多种，其中比较重要和常用的是InternalResourceViewResolver（内部资源视图解析器）
+    3.(1)如果没有视图解析器，我们在controller里面的代码是这样的：
+    @Controller
+    public class LoginActionController {
+    @RequestMapping("/index")
+    public String toIndex(HttpServletRequest request, ModelMap map, HttpSession session) {
+    return "/WEB-INF/jsp/index.jsp";
+    }
+    (2)使用了视图解析器，代码是这样的：
+    @Controller
+    public class LoginActionController {
+    @RequestMapping("/index")
+    public String toIndex(HttpServletRequest request, ModelMap map, HttpSession session) {
+    return "index";
+    }
+    @RequestMapping("/index")的controller可以通过/index或者/index.xxxx进行访问。
+    @RequestMapping("/index.htm")只能通过/index.htm进行访问。
+    @RequestMapping中的value值对应要拦截的request请求，只要请求中包含value的值，就会执行注解下对应的方法-->
+    <!--以下即为视图解析器-->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+</beans>
